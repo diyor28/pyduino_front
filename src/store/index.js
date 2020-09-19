@@ -26,15 +26,15 @@ export default new Vuex.Store({
         }
     },
     mutations: {
-        addTemperature(state, item) {
-            Object.entries(item).forEach(([key, value]) => {
-                if (!state.temperatures[key]) {
-                    Vue.set(state.temperatures, key, [value])
+        addTemperature(state, sensors) {
+            sensors.forEach(sensor => {
+                if (!state.temperatures[sensor["sensor_id"]]) {
+                    Vue.set(state.temperatures, sensor["sensor_id"], [sensor])
                     return
                 }
-                if (state.temperatures[key].length >= 20)
-                    state.temperatures[key].shift()
-                state.temperatures[key].push(value)
+                if (state.temperatures[sensor["sensor_id"]].length >= 20)
+                    state.temperatures[sensor["sensor_id"]].shift()
+                state.temperatures[sensor["sensor_id"]].push(sensor)
             })
         }
     },

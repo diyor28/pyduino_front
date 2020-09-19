@@ -7,7 +7,7 @@
             </div>
             <div class="col-6">
                 <label>Пин</label>
-                <b-form-input type="number" v-model="data.pin" placeholder="Пин"></b-form-input>
+                <b-form-select v-model="data.pin" :options="pinOptions"></b-form-select>
             </div>
             <div class="col-6">
                 <label>Тип сенсора</label>
@@ -81,11 +81,12 @@ export default {
                 { value: 'up', text: 'Верхний' },
                 { value: 'down', text: 'Нижний' }
             ],
+            pinOptions: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49],
             title: '',
         }
     },
     computed: {
-        ...mapGetters('spis', { find: 'find' }),
+        ...mapGetters('sensors', { find: 'find' }),
 
         pairOptions() {
             const inverse = { 'up': 'down', 'down': 'up' };
@@ -95,7 +96,7 @@ export default {
     },
 
     methods: {
-        ...mapActions('spis', { create: 'create', patch: 'patch' }),
+        ...mapActions('sensors', { create: 'create', patch: 'patch' }),
 
         save() {
             let data = this.data;
