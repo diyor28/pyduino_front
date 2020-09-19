@@ -58,7 +58,6 @@ export default {
                     pairSensors.forEach(pairSensor => {
                         const pair = processed.find(el => parseInt(el.id) === parseInt(pairSensor.id))
                         if (!pair) return
-                        console.log(reading.temperature, pair.temperature)
                         reading.pairDifferences.push({
                             pair,
                             diff: reading.temperature - pair.temperature

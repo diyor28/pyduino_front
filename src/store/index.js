@@ -3,8 +3,13 @@ import Vuex from 'vuex'
 
 import service from './service'
 
+const url = new URL(process.env.VUE_APP_WS)
+url.hostname = window.location.hostname
+const WS_URL = url.href
+console.log(WS_URL)
+
 function createWebSocketPlugin() {
-    const ws = new WebSocket(process.env.VUE_APP_WS);
+    const ws = new WebSocket(WS_URL);
     return store => {
         ws.onmessage = (event) => {
             let data = JSON.parse(event.data);

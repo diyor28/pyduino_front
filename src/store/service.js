@@ -1,6 +1,8 @@
 const axios = require('axios')
 
-const BASE_URL = window.location.host
+const url = new URL(process.env.VUE_APP_BASE_API)
+url.hostname = window.location.hostname
+const BASE_URL = url.href
 
 export default function (path) {
     return {
@@ -52,7 +54,7 @@ export default function (path) {
             },
 
             find(context, query) {
-                const url = BASE_URL + `/${ path }`
+                const url = BASE_URL + path
                 return axios.get(url).then(response => {
                     context.commit('setData', response.data)
                     return response.data
@@ -60,7 +62,7 @@ export default function (path) {
             },
 
             create(context, data) {
-                const url = BASE_URL + `/${ path }`
+                const url = BASE_URL + path
                 return axios.post(url, data).then(response => {
                     context.commit('addItem', response.data)
                     return response.data
@@ -71,7 +73,7 @@ export default function (path) {
             },
 
             patch(context, [id, data]) {
-                const url = BASE_URL + `/${ path }/${ id }`
+                const url = BASE_URL + `${ path }/${ id }`
                 return axios.patch(url, data).then(response => {
                     context.commit('updateItem', response.data)
                     return response.data
@@ -79,7 +81,7 @@ export default function (path) {
             },
 
             remove(context, id) {
-                const url = BASE_URL + `/${ path }/${ id }`
+                const url = BASE_URL + `${ path }/${ id }`
                 return axios.delete(url).then(response => {
                     context.commit('removeItem', response.data)
                     return response.data
