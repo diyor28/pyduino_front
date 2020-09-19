@@ -1,6 +1,6 @@
 const axios = require('axios')
 
-const BASE_URL = process.env.VUE_APP_BASE_API
+const BASE_URL = window.location.host
 
 export default function (path) {
     return {
