@@ -19,21 +19,9 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th style="color: #8ebdff">Нижний порог °C</th>
-                                <td class="text-center small" v-for="reading in readings(location)" :key="reading.id">
-                                    {{reading.low_threshold.toFixed(2)}}
-                                </td>
-                            </tr>
-                            <tr>
                                 <th>Температура °C</th>
-                                <td class="text-center small" v-for="reading in readings(location)" :key="reading.id">
+                                <td class="text-center" v-for="reading in readings(location)" :key="reading.id">
                                     {{reading.temperature.toFixed(2)}}
-                                </td>
-                            </tr>
-                            <tr>
-                                <th style="color: #ff7d7d">Верхний порог °C</th>
-                                <td class="text-center small" v-for="reading in readings(location)" :key="reading.id">
-                                    {{reading.high_threshold.toFixed(2)}}
                                 </td>
                             </tr>
                             </tbody>
@@ -56,13 +44,13 @@
                             </tr>
                             <tr>
                                 <th>Порог срабатывания °C</th>
-                                <td class="text-center small" v-for="(delta, deltaIndex) in deltas()" :key="deltaIndex">
+                                <td class="text-center" v-for="(delta, deltaIndex) in deltas()" :key="deltaIndex">
                                     {{delta.pairB.delta.toFixed(2)}}
                                 </td>
                             </tr>
                             <tr>
                                 <th>Разница °C</th>
-                                <td class="text-center small" v-for="(delta, deltaIndex) in deltas()" :key="deltaIndex">
+                                <td class="text-center" v-for="(delta, deltaIndex) in deltas()" :key="deltaIndex">
                                     {{delta.diff.toFixed(2)}}
                                 </td>
                             </tr>

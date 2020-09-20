@@ -17,18 +17,6 @@
                 <label>Верхний/Нижний</label>
                 <b-form-select v-model="data.location" :options="locationOptions"></b-form-select>
             </div>
-            <div class="col-12">
-                <div class="row">
-                    <div class="col-6">
-                        <label>Нижний порог температуры</label>
-                        <b-form-input v-model="data.low_threshold" type="number"></b-form-input>
-                    </div>
-                    <div class="col-6">
-                        <label>Верхний порог температуры</label>
-                        <b-form-input v-model="data.high_threshold" type="number"></b-form-input>
-                    </div>
-                </div>
-            </div>
             <div class="col-12" v-if="data.location === 'down'">
                 <div class="row">
                     <div class="col-6">
