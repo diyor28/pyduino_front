@@ -13,7 +13,7 @@
                             </thead>
                             <tbody>
                             <tr>
-                                <th>Датчик</th>
+                                <th>Термо сенсоры</th>
                                 <td class="text-center" v-for="reading in readings(location)" :key="reading.id">
                                     {{reading.label}}
                                 </td>
