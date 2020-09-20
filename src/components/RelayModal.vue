@@ -7,7 +7,7 @@
             </div>
             <div class="col-6">
                 <label>Пин</label>
-                <b-form-input type="number" v-model="data.pin" placeholder="Пин"></b-form-input>
+                <b-form-select :options="pinOptions" v-model="data.pin" placeholder="Пин"></b-form-select>
             </div>
             <div class="col-6">
                 <label>Отключить</label>
@@ -35,6 +35,7 @@ export default {
         return {
             data: {},
             title: '',
+            pinOptions: [11, 13, 15, 16, 18, 22, 29, 31, 32, 33, 36, 37, 38]
         }
     },
     computed: {

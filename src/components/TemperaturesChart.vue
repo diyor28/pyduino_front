@@ -19,7 +19,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th>Нижний порог °C</th>
+                                <th style="color: #8ebdff">Нижний порог °C</th>
                                 <td class="text-center small" v-for="reading in readings(location)" :key="reading.id">
                                     {{reading.low_threshold.toFixed(2)}}
                                 </td>
@@ -31,7 +31,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th>Верхний порог °C</th>
+                                <th style="color: #ff7d7d">Верхний порог °C</th>
                                 <td class="text-center small" v-for="reading in readings(location)" :key="reading.id">
                                     {{reading.high_threshold.toFixed(2)}}
                                 </td>
