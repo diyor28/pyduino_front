@@ -10,10 +10,6 @@
                 <b-form-input type="number" v-model="data.pin" placeholder="Пин"></b-form-input>
             </div>
             <div class="col-6">
-                <label>Пара</label>
-                <b-form-select v-model="data.pair_id"></b-form-select>
-            </div>
-            <div class="col-6">
                 <label>Отключить</label>
                 <custom-switch id="isDisabled" v-model="data.disabled"></custom-switch>
             </div>
