@@ -66,9 +66,6 @@ export default function (path) {
                 return axios.post(url, data).then(response => {
                     context.commit('addItem', response.data)
                     return response.data
-                }).catch(e => {
-                    console.log(e.response)
-                    return e
                 })
             },
 

@@ -8,7 +8,7 @@
                             <thead>
                             <tr>
                                 <th style="width: 20%"></th>
-                                <th v-for="index in readings(location).length" :key="index"></th>
+                                <th style="width: 10%" v-for="index in columns" :key="index"></th>
                             </tr>
                             </thead>
                             <tbody>
@@ -21,7 +21,7 @@
                             <tr>
                                 <th>Температура °C</th>
                                 <td class="text-center" v-for="reading in readings(location)" :key="reading.id">
-                                    {{reading.temperature.toFixed(2)}}
+                                    {{reading.temperature.toFixed(1)}}
                                 </td>
                             </tr>
                             </tbody>
@@ -32,7 +32,7 @@
                             <thead>
                             <tr>
                                 <th style="width: 20%"></th>
-                                <th v-for="index in deltas().length" :key="index"></th>
+                                <th style="width: 10%" v-for="index in columns" :key="index"></th>
                             </tr>
                             </thead>
                             <tbody>
@@ -45,13 +45,13 @@
                             <tr>
                                 <th>Порог срабатывания °C</th>
                                 <td class="text-center" v-for="(delta, deltaIndex) in deltas()" :key="deltaIndex">
-                                    {{delta.pairB.delta.toFixed(2)}}
+                                    {{delta.pairB.delta.toFixed(1)}}
                                 </td>
                             </tr>
                             <tr>
                                 <th>Разница °C</th>
                                 <td class="text-center" v-for="(delta, deltaIndex) in deltas()" :key="deltaIndex">
-                                    {{delta.diff.toFixed(2)}}
+                                    {{delta.diff.toFixed(1)}}
                                 </td>
                             </tr>
                             </tbody>
@@ -80,18 +80,16 @@ export default {
         readings(location) {
             let processed = Object.entries(this.temps).map(([sensor_id, values]) => {
                 const sensor = this.getSensor(parseInt(sensor_id));
-                return {
-                    id: sensor_id,
-                    label: sensor.label,
-                    temperature: values[0].temperature,
-                    high_threshold: sensor.high_threshold,
-                    low_threshold: sensor.low_threshold,
-                    pair: sensor.pair,
-                    location: sensor.location
-                }
+                if (!sensor)
+                    return {}
+                sensor.temperature = values[values.length - 1].temperature
+                return sensor
             });
             if (!location) return processed
-            return processed.filter(el => el.location === location)
+            return processed.filter(el => el.location === location).map(el => {
+                el.relay = this.getRelay(el.relay_id)
+                return el
+            })
         },
 
         deltas() {
@@ -100,12 +98,12 @@ export default {
             processed.forEach(reading => {
                 const pairSensors = this.findSensors({ pair: parseInt(reading.id) })
                 pairSensors.forEach(pairSensor => {
-                    const pair = processed.find(el => parseInt(el.id) === parseInt(pairSensor.id))
-                    if (!pair) return
+                    const pairReading = processed.find(el => parseInt(el.id) === parseInt(pairSensor.id))
+                    if (!pairReading) return
                     result.push({
                         pairA: reading,
-                        pairB: { ...pairSensor, ...pair },
-                        diff: Math.abs(reading.temperature - pair.temperature)
+                        pairB: { ...pairSensor, ...pairReading },
+                        diff: Math.abs(reading.temperature - pairReading.temperature)
                     })
                 })
             })
@@ -115,6 +113,11 @@ export default {
     computed: {
         ...mapGetters({ temps: 'temperatures' }),
         ...mapGetters('sensors', { getSensor: 'get', findSensors: 'find' }),
+        ...mapGetters('relays', { getRelay: 'get' }),
+
+        columns() {
+            return Math.max(this.readings('up').length, this.readings('down').length)
+        }
     },
     mounted() {
     },

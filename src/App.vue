@@ -9,6 +9,9 @@
                 <li class="nav-item" :class="{'active': $route.name==='relays'}">
                     <a class="nav-link" href="#" @click="$router.push({name: 'relays'})">Реле</a>
                 </li>
+                <li class="nav-item" :class="{'active': $route.name==='temps'}">
+                    <a class="nav-link" href="#" @click="$router.push({name: 'temps'})">История температур</a>
+                </li>
             </ul>
         </nav>
         <router-view/>
@@ -21,42 +24,21 @@ import { mapActions, mapGetters } from "vuex";
 
 export default {
     data() {
-        return {
-            notifications: {}
-        }
+        return {}
     },
     mounted() {
-        this.findSensors({});
+        this.fetchSensors({});
+        this.fetchRelays({});
     },
     computed: {
         ...mapGetters('sensors', { getSensor: 'get' }),
         ...mapGetters({ temps: 'temperatures' })
     },
     methods: {
-        ...mapActions('sensors', { findSensors: 'find' }),
-        notify(message) {
-            // this.$toasted.global.success({ message })
-        },
+        ...mapActions('sensors', { fetchSensors: 'find' }),
+        ...mapActions('relays', { fetchRelays: 'find' }),
     },
-    watch: {
-        temps: {
-            deep: true,
-            handler(newVal) {
-                Object.entries(newVal).forEach(([sensorId, values]) => {
-                    const sensor = this.getSensor(parseInt(sensorId))
-                    if (!sensor || !sensor['high_threshold']) return;
-                    const lastRecord = values[values.length - 1]
-                    if (lastRecord['temperature'] > sensor['high_threshold']) {
-                        const message = `Температу на датчике ${ sensor.label } превысила верхний порог ${ sensor['high_threshold'] }`;
-                        this.notify(message)
-                    } else if (lastRecord['temperature'] < sensor['low_threshold']) {
-                        const message = `Температу на датчике ${ sensor.label } опсутилась ниже порога ${ sensor['low_threshold'] }`;
-                        this.notify(message)
-                    }
-                })
-            }
-        }
-    }
+    watch: {}
 }
 </script>
 

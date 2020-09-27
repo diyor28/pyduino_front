@@ -46,7 +46,8 @@ export default new Vuex.Store({
     actions: {},
     modules: {
         sensors: service('sensors'),
-        relays: service('relays')
+        relays: service('relays'),
+        history: service('temperatures')
     },
     plugins: [createWebSocketPlugin()]
 })

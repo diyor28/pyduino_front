@@ -10,13 +10,16 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 import '@/assets/fonts/feather/feather.css'
 import '@/assets/css/theme.css'
 import WebSockets from './plugins/websockets'
+
 const moment = require('moment')
+
+moment.locale('ru')
 
 
 Vue.config.productionTip = false
 Vue.use(BootstrapVue)
 Vue.use(WebSockets)
-Vue.use(VueMoment, {moment})
+Vue.use(VueMoment, { moment })
 
 new Vue({
     router,
