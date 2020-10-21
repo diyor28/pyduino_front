@@ -15,7 +15,9 @@ function createWebSocketPlugin() {
     return store => {
         ws.onmessage = (event) => {
             let data = JSON.parse(event.data);
-            store.commit('addTemperature', data)
+            console.log(data.err)
+            store.commit('addTemperature', data.data)
+            store.commit('setError', data.err)
         }
     };
 }
@@ -25,11 +27,16 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
-        temperatures: {}
+        temperatures: {},
+        socketErr: ''
     },
     getters: {
         temperatures: state => {
             return state.temperatures
+        },
+
+        socketErr: state => {
+            return state.socketErr
         },
 
         getResistance: state => (pk) => {
@@ -46,6 +53,10 @@ export default new Vuex.Store({
             sensors.forEach(sensor => {
                 Vue.set(state.temperatures, sensor["sensor_id"], sensor)
             })
+        },
+
+        setError(state, err) {
+            state.socketErr = err
         }
     },
     actions: {},

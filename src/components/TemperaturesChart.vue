@@ -13,7 +13,11 @@
                             <span>{{ boiler.temperature }}</span>
                         </div>
                     </div>
-                    <div class="col"></div>
+                    <div class="col">
+                        <div v-if="socketErr" class="alert alert-danger text-center small mb-0" role="alert">
+                            {{ socketErr }}
+                        </div>
+                    </div>
                     <div class="col-auto">
                         <button @click="fullView=!fullView" class="btn btn-white">
                             <i class="fe fe-tv"></i>
@@ -159,7 +163,7 @@ export default {
         }
     },
     computed: {
-        ...mapGetters({ temps: 'temperatures' }),
+        ...mapGetters({ temps: 'temperatures', socketErr: 'socketErr' }),
         ...mapGetters('sensors', { getSensor: 'get', findSensors: 'find' }),
         ...mapGetters('relays', { getRelay: 'get' }),
 
