@@ -9,7 +9,7 @@ import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import '@/assets/fonts/feather/feather.css'
 import '@/assets/css/theme.css'
-import WebSockets from './plugins/websockets'
+import Sensors from './plugins/sensors'
 
 const moment = require('moment')
 
@@ -18,7 +18,7 @@ moment.locale('ru')
 
 Vue.config.productionTip = false
 Vue.use(BootstrapVue)
-Vue.use(WebSockets)
+Vue.use(Sensors)
 Vue.use(VueMoment, { moment })
 
 new Vue({

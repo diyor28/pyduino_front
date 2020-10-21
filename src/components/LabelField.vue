@@ -1,5 +1,5 @@
 <template>
-    <b-input-group :prepend="prepend">
+    <div>
         <b-form-input :value="value"
                       :state="state"
                       @change="$emit('change', $event)"
@@ -7,13 +7,13 @@
         <b-form-invalid-feedback :state="state">
             Данное поле обезательно
         </b-form-invalid-feedback>
-    </b-input-group>
+    </div>
 </template>
 
 <script>
 export default {
     name: "LabelField",
-    props: { value: null, state: [Boolean, null], prepend: [String, null] },
+    props: { value: null, state: [Boolean, null] },
     data() {
         return {}
     },

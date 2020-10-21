@@ -6,10 +6,12 @@ import service from './service'
 const url = new URL(process.env.VUE_APP_WS)
 url.hostname = window.location.hostname
 const WS_URL = url.href
-console.log(WS_URL)
 
 function createWebSocketPlugin() {
     const ws = new WebSocket(WS_URL);
+    ws.onerror = e => {
+        console.log(e)
+    }
     return store => {
         ws.onmessage = (event) => {
             let data = JSON.parse(event.data);
@@ -28,18 +30,21 @@ export default new Vuex.Store({
     getters: {
         temperatures: state => {
             return state.temperatures
+        },
+
+        getResistance: state => (pk) => {
+            {
+                const reading = state.temperatures[pk]
+                if (!reading)
+                    return 0
+                return reading.resistance
+            }
         }
     },
     mutations: {
         addTemperature(state, sensors) {
             sensors.forEach(sensor => {
-                if (!state.temperatures[sensor["sensor_id"]]) {
-                    Vue.set(state.temperatures, sensor["sensor_id"], [sensor])
-                    return
-                }
-                if (state.temperatures[sensor["sensor_id"]].length >= 20)
-                    state.temperatures[sensor["sensor_id"]].shift()
-                state.temperatures[sensor["sensor_id"]].push(sensor)
+                Vue.set(state.temperatures, sensor["sensor_id"], sensor)
             })
         }
     },
@@ -47,7 +52,9 @@ export default new Vuex.Store({
     modules: {
         sensors: service('sensors'),
         relays: service('relays'),
-        history: service('temperatures')
+        history: service('temperatures'),
+        exports: service('exports'),
+        calibration: service('calibration')
     },
     plugins: [createWebSocketPlugin()]
 })

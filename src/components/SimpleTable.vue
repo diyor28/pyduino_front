@@ -66,7 +66,6 @@
             @click="column.link ? $router.push(column.link(item)) : column.click ? column.click(item) : null"
             style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 150px;"
             :title="typeof item[column.name] === 'string' && item[column.name].length > 20 ? item[column.name] : ''"
-            v-b-tooltip.hover
         >
           <span v-if="column.date_format">{{ formatDate(item[column.name], column.date_format) }}</span>
           <span v-else-if="column.duration">{{ unix(item[column.name]) | moment("calendar") }}</span>

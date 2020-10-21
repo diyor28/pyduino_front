@@ -12,6 +12,9 @@
                 <li class="nav-item" :class="{'active': $route.name==='temps'}">
                     <a class="nav-link" href="#" @click="$router.push({name: 'temps'})">История температур</a>
                 </li>
+                <li class="nav-item" :class="{'active': $route.name==='calibration'}">
+                    <a class="nav-link" href="#" @click="$router.push({name: 'calibration'})">Калибровка</a>
+                </li>
             </ul>
         </nav>
         <router-view/>

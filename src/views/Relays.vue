@@ -2,17 +2,24 @@
     <div class="container">
         <div class="row">
             <div class="col-12">
-                <div class="row">
-                    <div class="col"></div>
-                    <div class="col-auto">
-                        <button class="btn btn-primary" @click="openSensorModal({})">Добавить</button>
+                <div class="header mt-md-5">
+                    <div class="header-body">
+                        <div class="row">
+                            <div class="col"></div>
+                            <div class="col-auto">
+                                <button class="btn btn-primary" @click="openSensorModal({})">Добавить</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <simple-table
-                    :delete-item="deleteRelay"
-                    :edit="editRelay"
-                    :columns="columns" :data="relays">
-                </simple-table>
+                <div class="card">
+                    <div class="card-header"></div>
+                    <simple-table
+                        :delete-item="deleteRelay"
+                        :edit="editRelay"
+                        :columns="columns" :data="relays">
+                    </simple-table>
+                </div>
             </div>
         </div>
         <relay-modal id="RelayModal" :model="model"></relay-modal>

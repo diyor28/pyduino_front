@@ -1,8 +1,43 @@
+import Vue from 'vue'
+
 const axios = require('axios')
 
 const url = new URL(process.env.VUE_APP_BASE_API)
 url.hostname = window.location.hostname
 const BASE_URL = url.href
+
+function storeSort(data, query) {
+    data.sort((a, b) => {
+        for (const [field, ascending] of Object.entries(query.$sort)) {
+            if (a[field] > b[field])
+                return ascending === 1 ? 1 : -1
+            else
+                return ascending === 1 ? -1 : 1
+        }
+    })
+    return data
+}
+
+function storeSearch(data, query) {
+    for (const [key, operation] of Object.entries(query)) {
+        data = data.filter(el => {
+            if (typeof operation === 'object') {
+                if (operation.$regex) {
+                    if (!el[key])
+                        return false
+                    return el[key].match(new RegExp(operation.$regex, 'i'))
+                }
+                if (operation.$in)
+                    return operation.$in.includes(el[key])
+                return true
+            }
+            return el[key] === operation
+        })
+    }
+    if (query.$sort)
+        return storeSort(data, query)
+    return data
+}
 
 export default function (path) {
     return {
@@ -19,11 +54,7 @@ export default function (path) {
 
             find: (state) => (query) => {
                 if (!query) return state.data
-                let data = state.data;
-                for (const [key, value] of Object.entries(query)) {
-                    data = data.filter(el => el[key] === value)
-                }
-                return data
+                return storeSearch(state.data, query)
             }
         },
         mutations: {
@@ -37,7 +68,9 @@ export default function (path) {
 
             updateItem(state, item) {
                 const idx = state.data.findIndex(el => el.id === item.id)
-                state.data[idx] = item
+                if (idx === -1)
+                    return
+                Vue.set(state.data, idx, item)
             },
 
             removeItem(state, item) {
@@ -55,9 +88,28 @@ export default function (path) {
 
             find(context, query) {
                 const url = BASE_URL + path
-                return axios.get(url).then(response => {
+                query = query || {}
+                context.state.isLoading = true
+                return axios.get(url, {
+                    params: query, paramsSerializer: (params => {
+                        return Object.entries(params).map(([key, value]) => {
+                            if (Array.isArray(value))
+                                return value.map(el => `${ key }=${ el }`).join('&')
+                            return `${ key }=${ value }`
+                        }).join('&')
+                    })
+                }).then(response => {
+                    if (query.skip || query.limit) {
+                        context.commit('setData', response.data.data)
+                        context.state.isLoading = false
+                        return response.data
+                    }
                     context.commit('setData', response.data)
+                    context.state.isLoading = false
                     return response.data
+                }).catch(e => {
+                    context.state.isLoading = false
+                    return e
                 })
             },
 

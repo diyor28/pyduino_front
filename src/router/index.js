@@ -4,6 +4,7 @@ import Home from '../views/Home.vue'
 import Sensors from '../views/Sensors.vue'
 import Relays from '../views/Relays.vue'
 import Temperatures from "../views/Temperatures";
+import Calibration from "../views/Calibration";
 
 Vue.use(VueRouter)
 
@@ -28,6 +29,11 @@ const routes = [
         name: 'temps',
         component: Temperatures
     },
+    {
+        path: '/calibration',
+        name: 'calibration',
+        component: Calibration
+    }
 ]
 
 const router = new VueRouter({
