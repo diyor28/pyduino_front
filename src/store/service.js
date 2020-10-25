@@ -29,6 +29,8 @@ function storeSearch(data, query) {
                 }
                 if (operation.$in)
                     return operation.$in.includes(el[key])
+                if (operation.$ne)
+                    return el[key] !== operation.$ne
                 return true
             }
             return el[key] === operation
@@ -49,7 +51,7 @@ export default function (path) {
         },
         getters: {
             get: (state) => (id) => {
-                return state.data.filter(el => el.id === id)[0]
+                return state.data.find(el => el.id === parseInt(id))
             },
 
             find: (state) => (query) => {

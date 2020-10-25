@@ -29,15 +29,19 @@
                 </div>
             </div>
             <div class="row mt-5">
-                <div class="col-4">
+                <div class="col-3" v-if="data.location === 'up'">
+                    <label>Теплица</label>
+                    <b-form-select v-model="data.house_id" :options="houseOptions"></b-form-select>
+                </div>
+                <div class="col-3">
                     <label>Верхний предел температуры</label>
                     <b-form-input v-model="data.high_threshold" type="number" step="0.01"></b-form-input>
                 </div>
-                <div class="col-4">
+                <div class="col-3">
                     <label>Нижний предел температуры</label>
                     <b-form-input v-model="data.low_threshold" type="number" step="0.01"></b-form-input>
                 </div>
-                <div class="col-4">
+                <div class="col-3">
                     <label>Сопротивление провода</label>
                     <b-input-group>
                         <b-form-input v-model="data.wire_resistance" type="number" step="0.01"></b-form-input>
@@ -123,6 +127,7 @@ export default {
     computed: {
         ...mapGetters('sensors', { find: 'find' }),
         ...mapGetters('relays', { findRelaysInStore: 'find' }),
+        ...mapGetters('houses', { findHousesStore: 'find' }),
         ...mapGetters({ getResistance: 'getResistance' }),
 
         wireResistance() {
@@ -132,7 +137,7 @@ export default {
         pairOptions() {
             if (!this.data.location)
                 return [];
-            return this.find({ location: 'up', disabled: false }).map(el => ({ value: el.id, text: this.$sensorLabel(el) }))
+            return this.find({ _id: { $ne: this.data._id }, location: 'up' }).map(el => ({ value: el.id, text: this.$sensorLabel(el) }))
         },
 
         relayOptions() {
@@ -151,6 +156,10 @@ export default {
                 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49]
             const existingPins = this.find({}).map(sensor => sensor.pin).filter(el => el !== this.data.pin)
             return allPins.filter(el => !existingPins.includes(el))
+        },
+
+        houseOptions() {
+            return this.findHousesStore({}).map(el => ({ value: el.id, text: el.label }))
         }
     },
 

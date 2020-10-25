@@ -14,7 +14,7 @@
                 <custom-switch id="isDisabled" v-model="data.disabled"></custom-switch>
             </div>
             <div class="col-12">
-                <label>Влключить при выходе температуры на одном из датчиков из заданного температура</label>
+                <label>Влключить при выходе температуры на одном из датчиков из заданного диапозона</label>
                 <custom-switch id="thresholdRelay" v-model="data.fire_on_threshold"></custom-switch>
             </div>
         </div>
@@ -38,14 +38,18 @@ export default {
     data() {
         return {
             data: {},
-            title: '',
-            pinOptions: [8, 10, 12, 11, 13, 15, 16, 18, 22, 29, 31, 32, 33, 36, 37, 38]
+            title: ''
         }
     },
     computed: {
-        ...mapGetters('relays', { find: 'find' })
-    },
+        ...mapGetters('relays', { findRelaysStore: 'find' }),
 
+        pinOptions() {
+            const allPins = [8, 10, 12, 11, 13, 15, 16, 18, 22, 29, 31, 32, 33, 36, 37, 38]
+            const existingPins = this.findRelaysStore({}).map(sensor => sensor.pin)
+            return allPins.filter(el => !existingPins.includes(el) && el !== this.data.pin)
+        }
+    },
     methods: {
         ...mapActions('relays', { create: 'create', patch: 'patch' }),
 

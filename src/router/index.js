@@ -5,6 +5,7 @@ import Sensors from '../views/Sensors.vue'
 import Relays from '../views/Relays.vue'
 import Temperatures from "../views/Temperatures";
 import Calibration from "../views/Calibration";
+import GreenHouses from "../views/GreenHouses";
 
 Vue.use(VueRouter)
 
@@ -33,6 +34,11 @@ const routes = [
         path: '/calibration',
         name: 'calibration',
         component: Calibration
+    },
+    {
+        path: '/greenhouses',
+        name: 'greenhouses',
+        component: GreenHouses
     }
 ]
 

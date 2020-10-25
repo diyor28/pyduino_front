@@ -9,6 +9,9 @@
                 <li class="nav-item" :class="{'active': $route.name==='relays'}">
                     <a class="nav-link" href="#" @click="$router.push({name: 'relays'})">Реле</a>
                 </li>
+                <li class="nav-item" :class="{'active': $route.name==='greenhouses'}">
+                    <a class="nav-link" href="#" @click="$router.push({name: 'greenhouses'})">Теплицы</a>
+                </li>
                 <li class="nav-item" :class="{'active': $route.name==='temps'}">
                     <a class="nav-link" href="#" @click="$router.push({name: 'temps'})">История температур</a>
                 </li>
@@ -32,6 +35,7 @@ export default {
     mounted() {
         this.fetchSensors({});
         this.fetchRelays({});
+        this.fetchHouses({});
     },
     computed: {
         ...mapGetters('sensors', { getSensor: 'get' }),
@@ -40,6 +44,7 @@ export default {
     methods: {
         ...mapActions('sensors', { fetchSensors: 'find' }),
         ...mapActions('relays', { fetchRelays: 'find' }),
+        ...mapActions('houses', { fetchHouses: 'find' }),
     },
     watch: {}
 }

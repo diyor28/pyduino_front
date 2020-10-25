@@ -15,7 +15,6 @@ function createWebSocketPlugin() {
     return store => {
         ws.onmessage = (event) => {
             let data = JSON.parse(event.data);
-            console.log(data.err)
             store.commit('addTemperature', data.data)
             store.commit('setError', data.err)
         }
@@ -65,7 +64,8 @@ export default new Vuex.Store({
         relays: service('relays'),
         history: service('temperatures'),
         exports: service('exports'),
-        calibration: service('calibration')
+        calibration: service('calibration'),
+        houses: service('houses')
     },
     plugins: [createWebSocketPlugin()]
 })
