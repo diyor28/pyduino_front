@@ -117,6 +117,10 @@ export default function (path) {
 
             create(context, data) {
                 const url = BASE_URL + path
+                Object.entries(([key, value]) => {
+                    if (value === undefined)
+                        delete data[key]
+                })
                 return axios.post(url, data).then(response => {
                     context.commit('addItem', response.data)
                     return response.data
@@ -124,6 +128,10 @@ export default function (path) {
             },
 
             patch(context, [id, data]) {
+                Object.entries(([key, value]) => {
+                    if (value === undefined)
+                        delete data[key]
+                })
                 const url = BASE_URL + `${ path }/${ id }`
                 return axios.patch(url, data).then(response => {
                     context.commit('updateItem', response.data)

@@ -8,7 +8,7 @@ import BootstrapVue from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import '@/assets/fonts/feather/feather.css'
-import '@/assets/css/theme.css'
+import '@/assets/css/styles-dark.css'
 import Sensors from './plugins/sensors'
 
 const moment = require('moment')

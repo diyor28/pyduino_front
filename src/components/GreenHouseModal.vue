@@ -3,7 +3,12 @@
         <b-form>
             <div class="row">
                 <div class="col-6">
+                    <label>Название</label>
                     <b-form-input :state="validation.label" v-model="data.label" placeholder="Теплица 1"></b-form-input>
+                </div>
+                <div class="col-6">
+                    <label>Количество котлов</label>
+                    <b-form-input v-model="data.boilers" placeholder="9"></b-form-input>
                 </div>
             </div>
         </b-form>

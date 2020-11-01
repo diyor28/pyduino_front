@@ -93,16 +93,20 @@
                     <tr>
                         <th v-if="fullView">Состояние реле</th>
                         <td class="text-center" v-for="(delta, deltaIndex) in deltas" :key="deltaIndex">
-                                <span class="text-muted" v-if="delta.relay">
-                                    <span v-if="delta.relayActive" style="color: rgba(0,255,27,0.71)">Вкл</span>
-                                    <span v-else style="color: rgba(255,0,8,0.71)">Выкл</span>
-                                    <br>{{ delta.relay.label }}
-                                </span>
+                            <span class="text-muted" v-if="delta.relay">
+                                <span v-if="delta.relayActive" style="color: rgba(0,255,27,0.71)">Вкл</span>
+                                <span v-else style="color: rgba(255,0,8,0.71)">Выкл</span>
+                                <br>{{ delta.relay.label }}
+                            </span>
                             <span v-else>-</span>
                         </td>
                     </tr>
                     </tbody>
                 </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
             </div>
         </div>
     </div>

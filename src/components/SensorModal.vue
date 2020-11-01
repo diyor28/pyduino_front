@@ -8,7 +8,7 @@
                 </div>
                 <div class="col-3">
                     <label>Название</label>
-                    <b-form-input v-model="data.label" :state="validation.label"></b-form-input>
+                    <b-form-input v-model="data.label" placeholder="Левый верхний угол" :state="validation.label"></b-form-input>
                     <b-form-invalid-feedback :state="validation.label">
                         Данное поле обезательно
                     </b-form-invalid-feedback>
@@ -31,15 +31,19 @@
             <div class="row mt-5">
                 <div class="col-3" v-if="data.location === 'up'">
                     <label>Теплица</label>
-                    <b-form-select v-model="data.house_id" :options="houseOptions"></b-form-select>
+                    <clearable-select v-model="data.house_id"
+                                      v-b-tooltip
+                                      :title="houseOptions.length ? '': 'Сначал добавьте теплицу'"
+                                      :disabled="!houseOptions.length"
+                                      :options="houseOptions"></clearable-select>
                 </div>
                 <div class="col-3">
                     <label>Верхний предел температуры</label>
-                    <b-form-input v-model="data.high_threshold" type="number" step="0.01"></b-form-input>
+                    <b-form-input v-model="data.high_threshold" type="number" step="0.01" placeholder="26.2"></b-form-input>
                 </div>
                 <div class="col-3">
                     <label>Нижний предел температуры</label>
-                    <b-form-input v-model="data.low_threshold" type="number" step="0.01"></b-form-input>
+                    <b-form-input v-model="data.low_threshold" type="number" step="0.01" placeholder="22.2"></b-form-input>
                 </div>
                 <div class="col-3">
                     <label>Сопротивление провода</label>
@@ -56,14 +60,11 @@
                     <div class="row">
                         <div class="col-4">
                             <label>Пара</label>
-                            <b-input-group>
-                                <b-select v-model="data.pair" :options="pairOptions"></b-select>
-                                <div class="input-group-append" v-if="data.pair">
-                                    <button class="btn btn-white" @click="data.pair = null">
-                                        <i class="fe fe-x"></i>
-                                    </button>
-                                </div>
-                            </b-input-group>
+                            <clearable-select v-model="data.pair"
+                                              v-b-tooltip
+                                              :title="pairOptions.length ? '':'Сначала добавьте нижний сенсор'"
+                                              :disabled="!pairOptions.length"
+                                              :options="pairOptions"></clearable-select>
                         </div>
                         <div class="col-4" v-if="data.pair">
                             <label>Порог срабатывания реле при разнице в </label>
@@ -71,14 +72,7 @@
                         </div>
                         <div class="col-4" v-if="data.pair">
                             <label>Реле</label>
-                            <b-input-group>
-                                <b-select v-model="data.relay_id" :options="relayOptions"></b-select>
-                                <div class="input-group-append" v-if="data.relay_id">
-                                    <button class="btn btn-white" @click="data.relay_id = null">
-                                        <i class="fe fe-x"></i>
-                                    </button>
-                                </div>
-                            </b-input-group>
+                            <clearable-select v-model="data.relay_id" :options="relayOptions"></clearable-select>
                         </div>
                     </div>
                 </div>
@@ -95,6 +89,7 @@
 import Modal from "@/components/Modal";
 import { mapActions, mapGetters } from 'vuex';
 import CustomSwitch from "./CustomSwitch";
+import ClearableSelect from "./ClearableSelect";
 
 export default {
     name: "SensorModal",
@@ -102,7 +97,7 @@ export default {
         id: String,
         model: Object
     },
-    components: { CustomSwitch, Modal },
+    components: { ClearableSelect, CustomSwitch, Modal },
     mounted() {
     },
     data() {

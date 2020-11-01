@@ -72,7 +72,9 @@ export default {
                     name: 'label',
 
                     field: (item) => {
-                        return this.$sensorLabel(item) + `<span> ${ item.disabled ? '' : '<i class="fe fe-check" />' }</span>`
+                        const suffix = item.count ? ` (${ item.count })` : ''
+                        const disabled = item.disabled ? '' : `<span><i class="fe fe-check" /></span>`
+                        return this.$sensorLabel(item) + disabled + suffix
                     },
                     subtitle: (item) => {
                         return item.label

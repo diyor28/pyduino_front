@@ -13,7 +13,7 @@
 <script>
 import Treeselect from '@riophae/vue-treeselect';
 import { mapGetters } from 'vuex'
-import '@riophae/vue-treeselect/dist/vue-treeselect.css';
+import '@/assets/css/vue-treeselect.css';
 
 export default {
     name: "SensorsFilter",
@@ -25,8 +25,12 @@ export default {
     },
     computed: {
         ...mapGetters('sensors', { findSensorsStore: 'find' }),
+
         sensors() {
-            return this.findSensorsStore({})
+            return this.findSensorsStore({ $sort: { pin: -1 } }).map(el => {
+                const suffix = el.label ? `(${ el.label })` : ''
+                return { id: el.id, label: this.$sensorLabel(el) + suffix }
+            })
         }
     }
 }

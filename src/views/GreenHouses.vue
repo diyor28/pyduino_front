@@ -75,6 +75,14 @@ export default {
                         return item.label
                     }
                 },
+                {
+                    label: 'Кол-во котлов',
+                    name: 'boilers',
+
+                    field: (item) => {
+                        return item.boilers
+                    }
+                },
             ]
         }
     },
