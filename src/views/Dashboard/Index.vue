@@ -70,7 +70,7 @@ export default {
             this.$router.push({
                 name: 'dashboard.house',
                 params: { house_id: house.id },
-                query: { fullView: false }
+                query: { fullView: true }
             })
         })
     },
