@@ -1,22 +1,10 @@
 <template>
     <div id="app">
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand ml-2" @click="$router.push({name: 'home'})" href="#">Главная</a>
+            <router-link class="navbar-brand ml-2" active-class="active" :to="{name: 'dashboard'}">Панель</router-link>
             <ul class="navbar-nav ml-2">
-                <li class="nav-item" :class="{'active': $route.name==='sensors'}">
-                    <a class="nav-link" href="#" @click="$router.push({name: 'sensors'})">Датчики</a>
-                </li>
-                <li class="nav-item" :class="{'active': $route.name==='relays'}">
-                    <a class="nav-link" href="#" @click="$router.push({name: 'relays'})">Реле</a>
-                </li>
-                <li class="nav-item" :class="{'active': $route.name==='greenhouses'}">
-                    <a class="nav-link" href="#" @click="$router.push({name: 'greenhouses'})">Теплицы</a>
-                </li>
-                <li class="nav-item" :class="{'active': $route.name==='temps'}">
-                    <a class="nav-link" href="#" @click="$router.push({name: 'temps'})">История температур</a>
-                </li>
-                <li class="nav-item" :class="{'active': $route.name==='calibration'}">
-                    <a class="nav-link" href="#" @click="$router.push({name: 'calibration'})">Калибровка</a>
+                <li class="nav-item" v-for="(link, index) in links" :key="index">
+                    <router-link class="nav-link pointer" active-class="active" :to="{name: link.name}">{{ link.label }}</router-link>
                 </li>
             </ul>
         </nav>
@@ -30,7 +18,15 @@ import { mapActions, mapGetters } from "vuex";
 
 export default {
     data() {
-        return {}
+        return {
+            links: [
+                { name: 'sensors', label: 'Датчики' },
+                { name: 'relays', label: 'Реле' },
+                { name: 'greenhouses', label: 'Теплица' },
+                { name: 'temps', label: 'История температур' },
+                { name: 'calibration', label: 'Калибровка' }
+            ]
+        }
     },
     mounted() {
         this.fetchSensors({});

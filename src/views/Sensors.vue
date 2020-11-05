@@ -70,14 +70,13 @@ export default {
                 {
                     label: 'Название',
                     name: 'label',
-
                     field: (item) => {
                         const suffix = item.count ? ` (${ item.count })` : ''
-                        const disabled = item.disabled ? '' : `<span><i class="fe fe-check" /></span>`
-                        return this.$sensorLabel(item) + disabled + suffix
+                        return this.$sensorLabel(item) + suffix
                     },
                     subtitle: (item) => {
-                        return item.label
+                        const disabled = item.disabled ? '<span><i class="fe fe-x" /></span>' : ''
+                        return `${ disabled } ${ item.label || '' }`
                     },
                     sortable: true
                 },
