@@ -38,7 +38,7 @@
                         </div>
                     </div>
                     <simple-table
-                        :loading="isLoading"
+                        :loading="isFindPending"
                         :columns="columns"
                         :actions="false"
                         :on-sort="setSort"
@@ -142,7 +142,7 @@ export default {
         ...mapGetters('history', { findInStore: 'find' }),
         ...mapGetters('sensors', { findSensorsStore: 'find' }),
         ...mapGetters('exports', { findExportsStore: 'find' }),
-        ...mapState('history', { isLoading: 'isLoading' }),
+        ...mapState('history', { isLoading: 'isFindPending' }),
 
         columns() {
             let result = [

@@ -8,7 +8,11 @@
                         <b-form-input v-model="referenceTemp" placeholder="24.5" type="number" step="0.01"></b-form-input>
                     </div>
                     <div class="col-auto">
-                        <button class="btn btn-primary" @click="calibrate">Откалибровать</button>
+                        <button-loading :loading="isCalibrating"
+                                        class="btn btn-primary"
+                                        @click="calibrate">
+                            Откалибровать
+                        </button-loading>
                     </div>
                 </div>
             </div>
@@ -18,7 +22,7 @@
                 <div class="row">
                     <div class="col"></div>
                     <div class="col-auto">
-                        <button class="btn btn-primary" @click="saveChanges">Сохранить</button>
+                        <button-loading :loading="isPatchPending" class="btn btn-primary" @click="saveChanges">Сохранить</button-loading>
                     </div>
                 </div>
             </div>
@@ -44,10 +48,12 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions, mapState } from "vuex";
+import ButtonLoading from "../components/ButtonLoading";
 
 export default {
     name: "Calibration",
+    components: { ButtonLoading },
     data() {
         return {
             referenceTemp: null,
@@ -86,6 +92,8 @@ export default {
     computed: {
         ...mapGetters({ temps: 'temperatures' }),
         ...mapGetters('sensors', { findSensorsStore: 'find', getSensor: 'get' }),
+        ...mapState('sensors', { isPatchPending: 'isPatchPending' }),
+        ...mapState('calibration', { isCalibrating: 'isCreatePending' }),
 
         sensors() {
             return Object.entries(this.temps).map(([sensor_id, value]) => {

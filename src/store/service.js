@@ -46,7 +46,11 @@ export default function (path) {
         namespaced: true,
         state: {
             data: [],
-            isLoading: false,
+            isGetPending: false,
+            isFindPending: false,
+            isCreatePending: false,
+            isPatchPending: false,
+            isRemovePending: false,
             count: 0
         },
         getters: {
@@ -83,15 +87,18 @@ export default function (path) {
         actions: {
             get(context, id) {
                 const url = BASE_URL + `/${ path }/${ id }`
+                context.state.isGetPending = true;
                 return axios.get(url).then(response => {
                     return response.data
+                }).finally(() => {
+                    context.state.isGetPending = false;
                 })
             },
 
             find(context, query) {
                 const url = BASE_URL + path
                 query = query || {}
-                context.state.isLoading = true
+                context.state.isFindPending = true
                 return axios.get(url, {
                     params: query, paramsSerializer: (params => {
                         return Object.entries(params).map(([key, value]) => {
@@ -103,15 +110,14 @@ export default function (path) {
                 }).then(response => {
                     if (query.skip || query.limit) {
                         context.commit('setData', response.data.data)
-                        context.state.isLoading = false
                         return response.data
                     }
                     context.commit('setData', response.data)
-                    context.state.isLoading = false
                     return response.data
                 }).catch(e => {
-                    context.state.isLoading = false
                     return e
+                }).finally(() => {
+                    context.state.isFindPending = false
                 })
             },
 
@@ -121,9 +127,12 @@ export default function (path) {
                     if (value === undefined)
                         delete data[key]
                 })
+                context.state.isCreatePending = true
                 return axios.post(url, data).then(response => {
                     context.commit('addItem', response.data)
                     return response.data
+                }).finally(() => {
+                    context.state.isCreatePending = false
                 })
             },
 
@@ -132,18 +141,24 @@ export default function (path) {
                     if (value === undefined)
                         delete data[key]
                 })
+                context.state.isPatchPending = true
                 const url = BASE_URL + `${ path }/${ id }`
                 return axios.patch(url, data).then(response => {
                     context.commit('updateItem', response.data)
                     return response.data
+                }).finally(() => {
+                    context.state.isPatchPending = false
                 })
             },
 
             remove(context, id) {
                 const url = BASE_URL + `${ path }/${ id }`
+                context.state.isRemovePending = true
                 return axios.delete(url).then(response => {
                     context.commit('removeItem', response.data)
                     return response.data
+                }).finally(() => {
+                    context.state.isRemovePending = false
                 })
             }
         }
