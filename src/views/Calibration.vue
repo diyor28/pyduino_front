@@ -38,7 +38,7 @@
                     <div class="col-2 pr-5 py-2" v-for="(sensor, index) in sensors" :key="index">
                         <label>{{ $sensorLabel(sensor) }} <span v-if="sensor.label" class="small text-muted">({{ sensor.label }})</span></label>
                         <b-input-group :prepend="`${sensor.temperature.toFixed(1)} °C`" style="width: 180px">
-                            <b-form-input v-model="correctionRes[sensor.id]" placeholder="Калибровочное значение" type="number" step="0.01"></b-form-input>
+                            <b-form-input :value="correctionRes[sensor.id]" @change="newCorRes[sensor.id]=$event" placeholder="Калибровочное значение" type="number" step="0.01"></b-form-input>
                         </b-input-group>
                     </div>
                 </div>
@@ -56,8 +56,10 @@ export default {
     components: { ButtonLoading },
     data() {
         return {
+            isPatchPending: false,
             referenceTemp: null,
-            correctionRes: {}
+            correctionRes: {},
+            newCorRes: {}
         }
     },
     mounted() {
@@ -84,15 +86,21 @@ export default {
         },
 
         saveChanges() {
-            Object.entries(this.correctionRes).map(([sensor_id, correction_resistance]) => {
-                this.patchSensor([sensor_id, { correction_resistance }]).catch(e => console.log(e.response))
+            const pending = []
+            this.isPatchPending = true;
+            Object.entries(this.newCorRes).map(([sensor_id, correction_resistance]) => {
+                pending.push(this.patchSensor([sensor_id, { correction_resistance }]).catch(e => console.log(e.response)))
+            })
+            Promise.all(pending).then(() => {
+                this.newCorRes = {}
+            }).finally(() => {
+                this.isPatchPending = false
             })
         }
     },
     computed: {
         ...mapGetters({ temps: 'temperatures' }),
         ...mapGetters('sensors', { findSensorsStore: 'find', getSensor: 'get' }),
-        ...mapState('sensors', { isPatchPending: 'isPatchPending' }),
         ...mapState('calibration', { isCalibrating: 'isCreatePending' }),
 
         sensors() {
